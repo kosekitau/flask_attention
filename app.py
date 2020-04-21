@@ -45,7 +45,7 @@ def post():
   #分析ワードを選択した場合
   elif request.form.get('name') == None:
     #から分析ワードのindexを取得
-    index = request.form.get('sel')
+    index = int(request.form.get('sel'))
     sonar.make_html('', index)
     return render_template('test.html')
   

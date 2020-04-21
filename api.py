@@ -229,10 +229,12 @@ class Sonar(object):
       #label = batch.Label[index]  # ラベル
       pred = preds  # 予測
 
+      html = '<form action="/post" method="post" class="form-inline">'
+      
       
       #index番目のデータの0番目のmemoryの関連度を抽出している
       
-      html = '可視化ワード：{}<br><br>'.format(self.itos[inputs[index]])
+      html += '可視化ワード：{}<br><br>'.format(self.itos[inputs[index]])
       #0バッチ目のindex番目の単語
       attens1 = normlized_weights_1[0, index, :]  # <cls>のAttention
       attens1 /= attens1.max()
@@ -250,7 +252,7 @@ class Sonar(object):
       
       #プルダウンメニューを作る
       html += '<select name="sel" class="form-control"><option value="null" disabled selected>分析ワードを選択</option>'
-      for i, word in enumerate(result):
+      for i, word in enumerate(result, 1):
         html+='<option value="{}">{}</option>'.format(i, word)
       html+='</select><button type="submit" class="btn btn-default">送信する</button><br><br>'
 
@@ -267,7 +269,7 @@ class Sonar(object):
       for word, attn in zip(inputs, attens2):
         html += highlight(self.itos[word], attn)
 
-      html += "<br><br>"
+      html += "<br><br></form>"
 
       f = open('templates/test.html','w')
       f.write(html)
