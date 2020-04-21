@@ -269,7 +269,7 @@ class Sonar(object):
       for word, attn in zip(inputs, attens2):
         html += highlight(self.itos[word], attn)
 
-      html += "<br><br></form>"
+      html += '<br><br><input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">送信する</button></form>'
 
       f = open('templates/test.html','w')
       f.write(html)
