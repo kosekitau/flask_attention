@@ -205,6 +205,7 @@ class Sonar(object):
       self.model = TransformerClassification(
         text_embedding_vectors=emb, d_model=300, max_seq_len=140, output_dim=5)
       self.model.load_state_dict(torch.load(model_path)) #モデルにパラメータを当てはめる
+      self.model.eval()
       self.text = ''
 
     def make_html(self, text, index):
@@ -212,19 +213,20 @@ class Sonar(object):
       #テキストを形態素解析
       if text != '':
         self.text = text
+      self.text = '今日はとても悲しいことがあったんだ'
       mecab = MeCab.Tagger('-Owakati')
       result = [tok for tok in mecab.parse(self.text).split()]
       inputs = text_to_ids(result, self.stoi) # 番号を振る
-      inputs = torch.tensor(inputs)
+      #inputs = torch.tensor(inputs)
       
       # mask作成
       input_pad = 1  # <pad>は1
       input_mask = (inputs != input_pad)
 
+      
       # 感情分類
       outputs, normlized_weights_1, normlized_weights_2 = self.model(
         inputs, input_mask)
-      print(outputs)
       _, preds = torch.max(outputs, 1)  # ラベルを予測
 
       #label = batch.Label[index]  # ラベル

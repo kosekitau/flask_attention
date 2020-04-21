@@ -44,7 +44,6 @@ def post():
   
   elif request.form.get('name') != None:
     print('分類モード')
-    print(request.form.get('name') == '¥n')
     # テキストボックスから分類する文章を取得
     text = request.form.get('name')
     #text = request.form.get('radio')
