@@ -224,10 +224,11 @@ class Sonar(object):
       # 感情分類
       outputs, normlized_weights_1, normlized_weights_2 = self.model(
         inputs, input_mask)
+      print(outputs)
       _, preds = torch.max(outputs, 1)  # ラベルを予測
 
       #label = batch.Label[index]  # ラベル
-      pred = preds  # 予測
+      #pred = preds  # 予測
 
       html = '<form action="/post" method="post" class="form-inline">'
       
@@ -244,11 +245,11 @@ class Sonar(object):
 
       # ラベルと予測結果を文字に置き換え
       #label_str = label
-      pred_str = pred
+      #pred_str = pred
 
       
       # 表示用のHTMLを作成する
-      html += '推論ラベル：{}<br><br>'.format(pred_str)
+      html += '推論ラベル：{}<br><br>'.format(preds)
       
       #プルダウンメニューを作る
       html += '<select name="sel" class="form-control"><option value="null" disabled selected>分析ワードを選択</option>'

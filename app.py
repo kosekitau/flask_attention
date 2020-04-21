@@ -34,7 +34,17 @@ def post():
   #resquest.form['name']に入力したテキストが入ってる？
   #getで拾えない場合はエラーを吐かずNoneを渡す
   #新しく入力されたテキストを分析
-  if request.form.get('sel') == None:
+  #分析ワードを選択した場合
+  if request.form.get('sel') != None:
+    print('分析ワード可視化モード')
+    #から分析ワードのindexを取得
+    index = int(request.form.get('sel'))
+    sonar.make_html('', index)
+    return render_template('test.html')
+  
+  elif request.form.get('name') != None:
+    print('分類モード')
+    print(request.form.get('name') == '¥n')
     # テキストボックスから分類する文章を取得
     text = request.form.get('name')
     #text = request.form.get('radio')
@@ -42,14 +52,10 @@ def post():
     sonar.make_html(text, 0)
     return render_template('test.html')
       
-  #分析ワードを選択した場合
-  elif request.form.get('name') == None:
-    #から分析ワードのindexを取得
-    index = int(request.form.get('sel'))
-    sonar.make_html('', index)
-    return render_template('test.html')
   
   else:
+    print(request.form.get('sel'))
+    print(request.form.get('name'))
     # エラーなどでリダイレクトしたい場合はこんな感じで
     return redirect(url_for('index'))
 
