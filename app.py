@@ -36,14 +36,12 @@ def post():
   #新しく入力されたテキストを分析
   #分析ワードを選択した場合
   if request.form.get('sel') != None:
-    print('分析ワード可視化モード')
     #から分析ワードのindexを取得
     index = int(request.form.get('sel'))
     sonar.make_html('', index)
     return render_template('test.html')
   
   elif request.form.get('name') != None:
-    print('分類モード')
     # テキストボックスから分類する文章を取得
     text = request.form.get('name')
     #text = request.form.get('radio')

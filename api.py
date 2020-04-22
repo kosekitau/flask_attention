@@ -251,7 +251,7 @@ class Sonar(object):
 
       
       # 表示用のHTMLを作成する
-      html += '推論ラベル：{}<br><br>'.format(preds)
+      html += '感情分析結果：{}<br><br>'.format(preds)
       
       #プルダウンメニューを作る
       html += '<select name="sel" class="form-control"><option value="null" disabled selected>分析ワードを選択</option>'
@@ -261,14 +261,14 @@ class Sonar(object):
 
       
       # 1段目のAttention
-      html += '[TransformerBlockの1段目のAttentionを可視化]<br>'
+      html += '[1段目のAttentionWeightを可視化]<br>'
       #sentenceはid列
       for word, attn in zip(inputs, attens1):
         html += highlight(self.itos[word], attn)
       html += "<br><br>"
 
       # 2段目のAttention
-      html += '[TransformerBlockの2段目のAttentionを可視化]<br>'
+      html += '[2段目のAttentionWeightを可視化]<br>'
       for word, attn in zip(inputs, attens2):
         html += highlight(self.itos[word], attn)
 
