@@ -213,7 +213,6 @@ class Sonar(object):
       #テキストを形態素解析
       if text != '':
         self.text = text
-      self.text = '今日はとても悲しいことがあったんだ'
       mecab = MeCab.Tagger('-Owakati')
       result = [tok for tok in mecab.parse(self.text).split()]
       inputs = text_to_ids(result, self.stoi) # 番号を振る
@@ -261,14 +260,14 @@ class Sonar(object):
 
       
       # 1段目のAttention
-      html += '[1段目のAttentionWeightを可視化]<br>'
+      html += '[{}のAttentionWeightを可視化(1段目)]<br>'.format(self.itos[inputs[index]])
       #sentenceはid列
       for word, attn in zip(inputs, attens1):
         html += highlight(self.itos[word], attn)
       html += "<br><br>"
 
       # 2段目のAttention
-      html += '[2段目のAttentionWeightを可視化]<br>'
+      html += '[{}のAttentionWeightを可視化(2段目)]<br>'.format(self.itos[inputs[index]])
       for word, attn in zip(inputs, attens2):
         html += highlight(self.itos[word], attn)
 
