@@ -6,6 +6,7 @@ import numpy as np
 import random
 import math
 import pickle
+import re
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -236,7 +237,12 @@ class Sonar(object):
       
       #index番目のデータの0番目のmemoryの関連度を抽出している
       
-      html += '可視化ワード：{}<br><br>'.format(self.itos[inputs[index]])
+      #可視化するワード
+      attn_word = self.itos[inputs[index]]
+      attn_word = re.sub('<', '&lt;', attn_word)
+      attn_word = re.sub('>', '&gt;', attn_word)
+      html += '可視化ワード：{}<br><br>'.format(attn_word)
+      #print(self.itos[inputs[index]])
       #0バッチ目のindex番目の単語
       attens1 = normlized_weights_1[0, index, :]  # <cls>のAttention
       attens1 /= attens1.max()
@@ -260,14 +266,14 @@ class Sonar(object):
 
       
       # 1段目のAttention
-      html += '[{}のAttentionWeightを可視化(1段目)]<br>'.format(self.itos[inputs[index]])
+      html += '[{}のAttentionWeightを可視化(1段目)]<br>'.format(attn_word)
       #sentenceはid列
       for word, attn in zip(inputs, attens1):
         html += highlight(self.itos[word], attn)
       html += "<br><br>"
 
       # 2段目のAttention
-      html += '[{}のAttentionWeightを可視化(2段目)]<br>'.format(self.itos[inputs[index]])
+      html += '[{}のAttentionWeightを可視化(2段目)]<br>'.format(attn_word)
       for word, attn in zip(inputs, attens2):
         html += highlight(self.itos[word], attn)
 
