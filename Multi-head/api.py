@@ -323,8 +323,9 @@ class Sonar(object):
       #<cls>とwordのattention_weight
       for word, head in zip(inputs[0], attens1.transpose(1, 0)):
         #wordの各Headについて
-        html += highlight(self.itos[word], head)
-      html += "</table><br><br>"
+        if word != 1:
+          html += highlight(self.itos[word], head)
+      html += "</table>"
 
       """
       # 2段目のAttention
@@ -352,15 +353,14 @@ def text_to_ids(text_list, vcb):
 
   return result
 
-
+#色を設定
 def highlight(word, head):
-  #色を設定
   #head=>[head_num]
-  result = '<tr>'
+  result = '<tr><td>{}</td>'.format(word)
   #各headについて
   for weight in head:
     html_color = '#%02X%02X%02X' % (255, int(255*(1 - weight)), int(255*(1 - weight)))
-    result += '<td><span style="background-color: {}"> {}</span></td>'.format(html_color, word)
+    result += '<td><span style="background-color: {}">#</span></td>'.format(html_color)
   return result + '</tr>'
 
 
