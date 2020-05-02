@@ -218,6 +218,7 @@ class Sonar(object):
       mecab = MeCab.Tagger('-Owakati')
       result = [tok for tok in mecab.parse(self.text).split()]
       inputs = text_to_ids(result, self.stoi) # 番号を振る
+      inputs = inputs.unsqueeze(0) # [1, 140]
       #inputs = torch.tensor(inputs)
       
       # mask作成
@@ -239,7 +240,7 @@ class Sonar(object):
       #index番目のデータの0番目のmemoryの関連度を抽出している
       
       #可視化するワード
-      attn_word = self.itos[inputs[index]]
+      attn_word = self.itos[inputs[0, index]]
       attn_word = re.sub('<', '&lt;', attn_word)
       attn_word = re.sub('>', '&gt;', attn_word)
       html += '可視化ワード：{}<br><br>'.format(attn_word)
@@ -270,13 +271,13 @@ class Sonar(object):
       # 1段目のAttention
       html += '[{}のAttentionWeightを可視化(1段目)]<br>'.format(attn_word)
       #sentenceはid列
-      for word, attn in zip(inputs, attens1):
+      for word, attn in zip(inputs[0], attens1):
         html += highlight(self.itos[word], attn)
       html += "<br><br>"
 
       # 2段目のAttention
       html += '[{}のAttentionWeightを可視化(2段目)]<br>'.format(attn_word)
-      for word, attn in zip(inputs, attens2):
+      for word, attn in zip(inputs[0], attens2):
         html += highlight(self.itos[word], attn)
 
       html += '<br><br><input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">送信する</button></form>'
