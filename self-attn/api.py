@@ -87,6 +87,7 @@ class Attention(nn.Module):
     weights = torch.matmul(q, k.transpose(1, 2)) / math.sqrt(self.d_k)
 
     mask = mask.unsqueeze(1)
+    
     #mask部分を-infで置き換え
     weights = weights.masked_fill(mask==0, -1e9)
 
@@ -245,6 +246,7 @@ class Sonar(object):
       #print(self.itos[inputs[index]])
       #0バッチ目のindex番目の単語
       attens1 = normlized_weights_1[0, index, :]  # <cls>のAttention
+      print(attens1)
       attens1 /= attens1.max()
 
       attens2 = normlized_weights_2[0, index, :]  # <cls>のAttention
