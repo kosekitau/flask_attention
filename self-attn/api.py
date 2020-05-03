@@ -197,15 +197,15 @@ class TransformerClassification(nn.Module):
 class Sonar(object):
 
     def __init__(self):
-      emb = np.load('omomi.npy')
+      emb = np.load('omomi0503.npy')
       emb = torch.from_numpy(emb.astype(np.float32)).clone()
       # index→sentence ex:itos[0] => '<cls>'
-      self.itos = pickle.load(open('itos.pkl', 'rb')) 
+      self.itos = pickle.load(open('itos0503.pkl', 'rb')) 
       # sentence→index ex:stoi['<cls>'] => 0
-      self.stoi = pickle.load(open('stoi.pkl', 'rb')) 
-      model_path = 'net.pth'
+      self.stoi = pickle.load(open('stoi0503.pkl', 'rb')) 
+      model_path = 'net0503.pth'
       self.model = TransformerClassification(
-        text_embedding_vectors=emb, d_model=300, max_seq_len=140, output_dim=5)
+        text_embedding_vectors=emb, d_model=300, max_seq_len=140, output_dim=4)
       self.model.load_state_dict(torch.load(model_path)) #モデルにパラメータを当てはめる
       self.model.eval()
       self.text = ''

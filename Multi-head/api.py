@@ -261,7 +261,7 @@ class Sonar(object):
       outputs, normlized_weights_1, normlized_weights_2 = self.model(
         inputs, input_mask)
       _, preds = torch.max(outputs, 1)  # ラベルを予測
-      print(inputs.shape)
+      print(normlized_weights_1[0, :, 0, :])
 
       #label = batch.Label[index]  # ラベル
       #pred = preds  # 予測
@@ -306,7 +306,8 @@ class Sonar(object):
       html += '<select name="sel" class="form-control"><option value="null" disabled selected>分析ワードを選択</option>'
       for i, word in enumerate(result, 1):
         html+='<option value="{}">{}</option>'.format(i, word)
-      html+='</select><button type="submit" class="btn btn-default">送信する</button><br><br>'
+      html += '</select><br>'
+      html += '<input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">送信する</button><br><br>'
 
       
       # 1段目のAttention
@@ -333,7 +334,7 @@ class Sonar(object):
       for word, attn in zip(inputs, attens2):
         html += highlight(self.itos[word], attn)
       """
-      html += '<br><br><input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">送信する</button></form>'
+      html += '</form>'
 
       f = open('templates/test.html','w')
       f.write(html)
