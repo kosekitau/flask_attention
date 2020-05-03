@@ -18,7 +18,7 @@ import MeCab
 class Embedder(nn.Module):
   def __init__(self, text_embedding_vectors):
     super(Embedder, self).__init__()
-    #freezeで更新をしない
+    #埋め込み層の更新をしない
     self.embeddings=nn.Embedding.from_pretrained(
         embeddings=text_embedding_vectors, freeze=True)
 
@@ -28,7 +28,6 @@ class Embedder(nn.Module):
     return x_vec
 
 class PositionalEncoder(nn.Module):
-    '''入力された単語の位置を示すベクトル情報を付加する'''
 
     def __init__(self, d_model=300, max_seq_len=256):
         super().__init__()
@@ -108,7 +107,7 @@ class Attention(nn.Module):
 
 class FeedForward(nn.Module):
     def __init__(self, d_model, d_ff=1024, dropout=0.1):
-        '''Attention層から出力を単純に全結合層2つで特徴量を変換するだけのユニットです'''
+        
         super().__init__()
 
         self.linear_1 = nn.Linear(d_model, d_ff)
@@ -229,7 +228,7 @@ class Sonar(object):
       # 感情分類
       outputs, normlized_weights_1, normlized_weights_2 = self.model(
         inputs, input_mask)
-      _, preds = torch.max(outputs, 1)  # ラベルを予測
+      _, preds = torch.max(outputs, 1)  # valuesとindeces
 
       #label = batch.Label[index]  # ラベル
       #pred = preds  # 予測
@@ -247,7 +246,6 @@ class Sonar(object):
       #print(self.itos[inputs[index]])
       #0バッチ目のindex番目の単語
       attens1 = normlized_weights_1[0, index, :]  # <cls>のAttention
-      print(attens1)
       attens1 /= attens1.max()
 
       attens2 = normlized_weights_2[0, index, :]  # <cls>のAttention
@@ -256,16 +254,18 @@ class Sonar(object):
       # ラベルと予測結果を文字に置き換え
       #label_str = label
       #pred_str = pred
+      
+      emotion = {0:'怒り', 1:'恐怖', 2:'喜び', 3:'悲しみ'}
 
       
       # 表示用のHTMLを作成する
-      html += '感情分析結果：{}<br><br>'.format(preds)
+      html += '感情分析結果：{}<br><br>'.format(emotion[int(preds[0])])
       
       #プルダウンメニューを作る
       html += '<select name="sel" class="form-control"><option value="null" disabled selected>分析ワードを選択</option>'
       for i, word in enumerate(result, 1):
         html+='<option value="{}">{}</option>'.format(i, word)
-      html+='</select><button type="submit" class="btn btn-default">送信する</button><br><br>'
+      html+='</select><button type="submit" class="btn btn-default">分析する</button><br><br>'
 
       
       # 1段目のAttention
@@ -280,7 +280,8 @@ class Sonar(object):
       for word, attn in zip(inputs[0], attens2):
         html += highlight(self.itos[word], attn)
 
-      html += '<br><br><input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">送信する</button></form>'
+      html += '<br><br><textarea name="text" class="form-control" cols="50" rows="10"></textarea><br><button type="submit" class="btn btn-default">送信する</button></form>'
+      #html += '<br><br><input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">分析する</button></form>'
 
       f = open('templates/test.html','w')
       f.write(html)

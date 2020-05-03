@@ -30,9 +30,9 @@ def post():
     sonar.make_html('', index)
     return render_template('test.html')
   
-  elif request.form.get('name') != None:
+  elif request.form.get('text') != None:
     # テキストボックスから分類する文章を取得
-    text = request.form.get('name')
+    text = request.form.get('text')
     #text = request.form.get('radio')
     #感情分析を行い、test.html をレンダリングする
     sonar.make_html(text, 0)

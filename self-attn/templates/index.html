@@ -14,7 +14,7 @@
           {% endif %}
         </p>
         <form action="/post" method="post" class="form-inline">
-          <label for="name">名前</label>
+          <!--<label for="name">名前</label>-->
           <!--request.form['name']
           input typeの文字を取得している？
           -->
@@ -22,7 +22,8 @@
           <!--<input type="button" name="button" class="form-control" value="こんにちは">-->
           <!--nameはグループ名-->
           <!--<input type="radio" name="radio" class="form-control" value="こんにちは">-->
-          <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+          <!--<input type="text" class="form-control" id="name" name="name" placeholder="Name">-->
+          <textarea name="text" class="form-control" cols="50" rows="10"></textarea><br>
           <button type="submit" class="btn btn-default">送信する</button>
         </form>
       </div>
