@@ -233,7 +233,8 @@ class Sonar(object):
       #label = batch.Label[index]  # ラベル
       #pred = preds  # 予測
 
-      html = '<form action="/post" method="post" class="form-inline">'
+      html = '<style type="text/css">textarea {font-size: 100%;}</style><form action="/post" method="post" class="form-inline"></style>'
+      #html = '<style type="text/css">textarea {font-size: 100%;}<form action="/post" method="post" class="form-inline"></style>'
       
       
       #index番目のデータの0番目のmemoryの関連度を抽出している
@@ -269,18 +270,18 @@ class Sonar(object):
 
       
       # 1段目のAttention
-      html += '[{}のAttentionWeightを可視化(1段目)]<br>'.format(attn_word)
+      html += '＊{}のAttentionWeight(1段目)＊<br>'.format(attn_word)
       #sentenceはid列
       for word, attn in zip(inputs[0], attens1):
         html += highlight(self.itos[word], attn)
       html += "<br><br>"
 
       # 2段目のAttention
-      html += '[{}のAttentionWeightを可視化(2段目)]<br>'.format(attn_word)
+      html += '＊{}のAttentionWeight(2段目)＊<br>'.format(attn_word)
       for word, attn in zip(inputs[0], attens2):
         html += highlight(self.itos[word], attn)
 
-      html += '<br><br><textarea name="text" class="form-control" cols="50" rows="10"></textarea><br><button type="submit" class="btn btn-default">送信する</button></form>'
+      html += '<br><br><textarea name="text" class="form-control" cols="50" rows="10"></textarea><br><button type="submit" class="btn btn-default">分析する</button></form>'
       #html += '<br><br><input type="text" class="form-control" id="name" name="name" placeholder="Name"><button type="submit" class="btn btn-default">分析する</button></form>'
 
       f = open('templates/test.html','w')
